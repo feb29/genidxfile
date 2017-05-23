@@ -10,9 +10,10 @@ import (
 )
 
 var (
-	line = flag.Int("line", 10, "line")
-	size = flag.Int("size", 6500, "size")
-	max  = flag.Int("max", 15000000, "max")
+	label = flag.String("label", "", "string label")
+	line  = flag.Int("line", 10, "line number")
+	size  = flag.Int("size", 6500, "size of set")
+	max   = flag.Int("max", 15000000, "max value")
 )
 
 func main() {
@@ -25,6 +26,10 @@ func main() {
 			n := rand.Int31n(int32(*max))
 			slice[i] = fmt.Sprint(n)
 		}
-		fmt.Fprintf(os.Stdout, "%d\t%s\n", l, strings.Join(slice, "\t"))
+		if *label != "" {
+			fmt.Fprintf(os.Stdout, "%s\t%s\n", fmt.Sprintf("%s-%d", *label, l), strings.Join(slice, "\t"))
+		} else {
+			fmt.Fprintf(os.Stdout, "%d\t%s\n", l, strings.Join(slice, "\t"))
+		}
 	}
 }
