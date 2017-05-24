@@ -15,8 +15,8 @@ var (
 	label = flag.String("label", "", "string label")
 	sep   = flag.String("sep", "\t", "separator")
 	line  = flag.Int("line", 10, "line")
-	size  = flag.Int("size", 65000, "size")
-	max   = flag.Int("max", 15000000, "max")
+	size  = flag.Int("size", 20, "size")
+	max   = flag.Int("max", 10000, "max")
 )
 
 func main() {
