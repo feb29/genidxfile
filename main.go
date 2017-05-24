@@ -52,9 +52,9 @@ func main() {
 			j++
 		}
 		if *label != "" {
-			fmt.Fprintf(out, "%s\t%s\n", fmt.Sprintf("%s-%d", *label, l), strings.Join(buf[:j], *sep))
+			fmt.Fprintf(out, "%s\t%s\n", fmt.Sprintf("%s_%d", *label, l), strings.Join(buf[:j], *sep))
 		} else {
-			fmt.Fprintf(out, "%d\t%s\n", l, strings.Join(buf[:j], "\t"))
+			fmt.Fprintf(out, "%d\t%s\n", l, strings.Join(buf[:j], *sep))
 		}
 	}
 }
