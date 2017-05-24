@@ -1,8 +1,10 @@
 package main
 
 import (
+	"bufio"
 	"flag"
 	"fmt"
+	"io"
 	"math/rand"
 	"os"
 	"strings"
@@ -10,21 +12,42 @@ import (
 )
 
 var (
+	file = flag.String("file", "", "output file")
 	line = flag.Int("line", 10, "line")
-	size = flag.Int("size", 6500, "size")
+	size = flag.Int("size", 65000, "size")
 	max  = flag.Int("max", 15000000, "max")
 )
 
 func main() {
-	rand.Seed(time.Now().UnixNano())
 	flag.Parse()
 
-	for l := 1; l <= *line; l++ {
-		slice := make([]string, *size)
-		for i := 0; i < *size; i++ {
-			n := rand.Int31n(int32(*max))
-			slice[i] = fmt.Sprint(n)
+	if *line <= 1 || *size <= 1 {
+		return
+	}
+
+	rand.Seed(time.Now().UnixNano())
+
+	buf := make([]string, *size)
+
+	var out io.Writer
+	if *file != "" {
+		open, err := os.Create(*file)
+		if err != nil {
+			fmt.Println(err)
+			os.Exit(2)
 		}
-		fmt.Fprintf(os.Stdout, "%d\t%s\n", l, strings.Join(slice, "\t"))
+		out = bufio.NewWriter(open)
+	} else {
+		out = bufio.NewWriter(os.Stdout)
+	}
+
+	for l := 1; l <= *line; l++ {
+		i, j := 0, 0
+		for ; i < *size; i++ {
+			n := rand.Int31n(int32(*max))
+			buf[i] = fmt.Sprint(n)
+			j++
+		}
+		fmt.Fprintf(out, "%d\t%s\n", l, strings.Join(buf[:j], "\t"))
 	}
 }
